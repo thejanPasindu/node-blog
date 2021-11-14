@@ -1,0 +1,89 @@
+<% if(locals.event){ %>
+  <%- include ("../partials/messages"); %>
+<div class="card mt-3 mb-3">
+    <div class="card-body">
+        <h4 class="card-title"><%= event.name %></h4>
+        <h6 class="card-subtitle mb-2 text-muted">In <%= event.place %> / On <%= event.datetime.toLocaleDateString("sv-SE") %>  / At <%= event.datetime.toLocaleTimeString("en-GB") %> / <a id="starRank" href="/events/add-rank/<%= event._id%>" onclick="markRank()"><i class="fas fa-star"></i>  <%= event.rank %></a></h6>
+        <hr>
+        <input type="hidden" id="liked" value="<%= event._id %>">
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <% event.picture.forEach(function(pic, i) { %>
+                    <div class="carousel-item <%= i==0? 'active': ''%>">
+                        <img src="data:image/<%=pic.contentType%>;base64,<%=pic.data.toString('base64')%>" class="d-block w-100" alt="">
+                    </div>
+                <% }); %>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+        <p class="mt-4" style="text-align: justify;"><%= event.description %></p>
+        <div style="max-width: 360px;">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Organiser: <strong><%= organiser.name%></strong></li>
+            <li class="list-group-item"><i class="fas fa-envelope-square"></i> <%= organiser.email %></li>
+            <li class="list-group-item"><i class="fas  fa-phone-square"></i> <%= organiser.phone %></li>
+          </ul>
+        </div>
+        <hr>
+        <h4>Send mail To Organiser</h4>
+        <form action="/events/send-mail" method="POST" class="mb-4">
+          <input type="hidden" name="event_id" value="<%= event._id %>">
+          <div class="row">
+            <div class="col">
+              <label for="name" class="col-sm-2 col-form-label">Your name</label>
+              <input type="text" class="form-control" placeholder="Your Name" aria-label="Your name" name="name" id="name">
+            </div>
+            <div class="col">
+              <label for="email" class="col-sm-2 col-form-label">Your email</label>
+              <input type="email" class="form-control" placeholder="Your email" aria-label="email" name="email" id="email">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="msg" class="form-label mt-4">Your message</label>
+            <textarea class="form-control" id="msg" rows="3" name="msg"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary mt-3">Send</button>
+        </form>
+    </div>
+    <script>
+
+      id = document.getElementById("liked").value;
+      if(localStorage.getItem("eventOrgLikes")){
+        localStorage.getItem("eventOrgLikes").split(",").forEach(element => {
+          if(element === id){
+            document.getElementById("starRank").style.color = "#FDCC0D";
+            document.getElementById("starRank").href = "/events/remove-rank/" + id;
+          }
+        });
+      }
+
+      function markRank(){
+        if(localStorage.getItem("eventOrgLikes")){
+          let x = localStorage.getItem("eventOrgLikes").split(",")
+          if(x.includes(id)){
+            x = x.filter(function(value, index, arr){ 
+              return value != id;
+            });
+          }else{
+            x.push(id);
+          }
+          localStorage.setItem("eventOrgLikes", x);
+        }else{
+          let x = [];
+          x.push(id);
+          localStorage.setItem("eventOrgLikes", x);
+        }
+        return true;
+      }
+      
+    </script>
+</div>
+<% } %>  

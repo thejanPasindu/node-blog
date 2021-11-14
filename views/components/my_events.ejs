@@ -1,0 +1,38 @@
+<div class="card mt-3 mb-3">
+    <div class="card-body table-card">
+        <h4 class="card-title">Events owned by you</h4>
+        <h6 class="card-subtitle mb-2 text-muted"></h6>
+        <%- include ("../partials/messages"); %>
+        <% if(locals.events){ %>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% events.forEach(function(event) { %>
+                    <tr>
+                        <td><%= event.name %></td>
+                        <td>
+                            <% if(event.description.length > 50){ %>
+                                <%= event.description.substring(0,50) %> ...
+                            <% } else {%>
+                                <%= event.description %>
+                            <% } %>    
+                        </td>
+                        <td><%= event.date %></td>
+                        <td>
+                                <a href="/events/edit-event/<%= event._id %>" class="btn btn-info">Edit</a>
+                        </td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } %>
+        
+    </div>
+</div>

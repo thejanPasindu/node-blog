@@ -1,0 +1,40 @@
+.navbar-brand img {
+    width: 150px;
+}
+
+.dropdown-menu[data-bs-popper] {
+    right: 0;
+    left: auto;
+}
+
+.img-thumbnail{
+    width: 200px;
+}
+
+.table-card{
+    overflow-x: scroll;
+}
+
+.sort-headding .text-black a {
+    color: #000!important;
+}
+
+.sort-headding a,
+.sort-headding h4 {
+    color: #777!important;
+}
+
+#starRank{
+    color: #777;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.dropdown-toggle{
+    color: rgba(255,255,255,.55);
+    text-decoration: none;
+}
+
+.dropdown-toggle:hover{
+    color: rgba(255,255,255,1);
+}

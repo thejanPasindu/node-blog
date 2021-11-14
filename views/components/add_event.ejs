@@ -1,0 +1,69 @@
+<div class="card mt-3 mb-3">
+  <div class="card-body">
+    <h4 class="card-title">Add Event</h4>
+    <h6 class="card-subtitle mb-2 text-muted"></h6>
+    <%- include ("../partials/messages"); %>
+      <form action="/events/add-event" method="POST" enctype="multipart/form-data">
+        <fieldset>
+          <div class="form-group">
+            <label for="eventName" class="form-label mt-4">Event Name</label>
+            <input type="text" class="form-control" id="eventName" name="name" aria-describedby="emailHelp"
+              placeholder="Event Name" value="<%= typeof name != 'undefined' ? name : '' %>">
+          </div>
+          <div class="form-group">
+            <label for="category" class="form-label mt-4">Select Event Categories</label>
+            <select class="form-select" id="category" name="category">
+              <% if(typeof category != 'undefined'){ %>
+                <option value="<%= category %>">
+                  <%= category %>
+                </option>
+              <% } %> 
+              <% categories.forEach(function(categor) { if(categor != category){ %>
+                <option value="<%= categor %>">
+                  <%= categor %>
+                </option>
+              <% }}); %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="description" class="form-label mt-4">Event Description</label>
+            <textarea class="form-control" id="description" rows="3" name="description"><% if(typeof description != 'undefined'){ %><%= description %> <% } %></textarea>
+          </div>
+          <div class="form-group">
+            <label for="place" class="form-label mt-4">Event Place</label>
+            <input type="text" class="form-control" id="place" name="place" placeholder="Playground, Aston University."
+              value="<%= typeof place != 'undefined' ? place : '' %>">
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="eventDate" class="form-label mt-4">Event Date</label>
+                <input type="date" class="form-control" id="eventDate" name="date" onkeydown="return false"
+                  value="<%= typeof date != 'undefined' ? date : '' %>">
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="eventTime" class="form-label mt-4">Event Time</label>
+                <input type="time" class="form-control" id="eventTime" name="time" onkeydown="return false"
+                  value="<%= typeof time != 'undefined' ? time : '' %>">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="formFile" class="form-label mt-4">Upload Event Images(only three images allowed)</label>
+            <input class="form-control" type="file" id="formFile" name="uploaded_file" multiple accept="image/jpg, image/jpeg" max="3">
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-3">Publish Event</button>
+        </fieldset>
+      </form>
+  </div>
+  <script>
+    var today = new Date()
+    today.setDate(today.getDate() + 1)
+    var date = today.toISOString().split('T')[0];
+    document.getElementsByName("date")[0].setAttribute('min', date);
+  </script>
+</div>
